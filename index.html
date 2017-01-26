@@ -1,8 +1,66 @@
-<html>
-<head>
-</head>
-<body>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Text;
+namespace Logins
+{
+    public partial class welcome : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
 
-<h1>world</h1>
-</body>
-</html>
+        }
+        protected DateTime currentdate()
+        {
+            return(DateTime.Now);
+            
+            //Response.Write(d);
+        }
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            
+            string t1=title.Text;
+            string a1 = author.Text;
+            Nullable<DateTime> dd = null;
+            //string postdata = post.Text;
+            
+            string tt=Request.Form["post"];
+                
+            if (!(tt == null))
+            {
+                DateTime d0 = currentdate();
+                dd = d0;
+            }
+            string url1 = url.Text;
+           
+            String conName = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
+            var cmd = "insert into Posts values(@Title,@Author,@Post,@PostDate,@url)";
+            using(SqlConnection con=new SqlConnection(conName))
+            {
+                using (SqlCommand cd = new SqlCommand(cmd, con))
+                {
+                    cd.Parameters.AddWithValue("@Title",t1);
+                    cd.Parameters.AddWithValue("@Author", a1);
+                    cd.Parameters.AddWithValue("@Post", tt);
+                    cd.Parameters.AddWithValue("@PostDate",dd.ToString());
+                    cd.Parameters.AddWithValue("@url", url1);
+                    con.Open();
+                    int check=cd.ExecuteNonQuery();
+                    //int check=(int)cd.ExecuteScalar();
+                    if (check > 0)
+                        Response.Write("inserted success");
+                    else
+                        Response.Write("failed to insert");
+                }
+            
+            }
+            
+        }
+       
+    }
+}
