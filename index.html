@@ -61,6 +61,39 @@ namespace Logins
             }
             
         }
+                
+                <span id="timer" class="timer-forget" style="visibility:hidden">20</span>
+                
+                
+                 $('#forgetmodalShow').click(function () {
+               // $('#loginDiv').hide();
+                alert('service is called');
+                $('#timer').css('visibility','visible');
+                
+               // $('#forgetmodal').show();
+                $('#forgetmodalShow').css('color', 'red');
+                $('#forgetmodalShow').css({ 'pointer-events': 'none' }, { 'cursor': 'default' });
+                setTimeout(function () {
+                    $('#forgetmodalShow').css({ 'pointer-events': 'auto' }, { 'cursor': 'default' });
+                    $('#forgetmodalShow').css('color', 'green');
+                    $('#timer').css('visibility', 'hidden');
+
+                }, 20000);
+
+                var interval = setInterval(function () {
+                    var timer = $('#timer').html();
+                    var seconds = parseInt(timer);
+                    seconds -= 1;
+                    if (seconds < 0) {
+                        seconds = 20
+                    }
+                    else if (seconds < 10 && length.seconds != 2) seconds = '0' + seconds;
+                    $('#timer').html(seconds);
+                    if (seconds == 0)
+                        clearInterval(interval);
+                }, 1000);
+                           });
+
        
     }
 }
